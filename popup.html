@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GZIP Folder Compressor</title>
+  <style>
+    body { font-family: sans-serif; padding: 1em; }
+    progress { width: 100%; margin-top: 1em; }
+  </style>
+</head>
+<body>
+  <h3>Select Folder</h3>
+  <input type="file" id="folderInput" webkitdirectory multiple />
+  <button id="compressBtn">Compress & Download</button>
+  <div id="status"></div>
+  <progress id="progressBar" value="0" max="100"></progress>
+
+  <script src="gzip_worker.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "GZIP Folder Compressor",
+  "version": "1.0",
+  "description": "Select a folder and gzip each file with .gz output",
+  "permissions": ["downloads"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
