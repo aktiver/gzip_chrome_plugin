@@ -11,24 +11,33 @@ document.getElementById("compressBtn").addEventListener("click", async () => {
 
   progressBar.max = files.length;
   progressBar.value = 0;
-  status.textContent = `Compressing ${files.length} files...`;
+  status.textContent = `📦 Packing ${files.length} files into archive...`;
 
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const content = await file.arrayBuffer();
-    const compressed = window.pako.gzip(new Uint8Array(content));  // true GZIP
+  try {
+    const tar = new window.Tar();
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const content = new Uint8Array(await file.arrayBuffer());
 
-    const blob = new Blob([compressed], { type: "application/gzip" });
+      // Preserve folder structure via webkitRelativePath
+      tar.append(file.webkitRelativePath, content);
+      progressBar.value = i + 1;
+    }
+
+    // Compress the entire tar buffer with true GZIP
+    const gzipped = window.pako.gzip(tar.out.subarray(0, tar.written));
+    const blob = new Blob([gzipped], { type: "application/gzip" });
     const url = URL.createObjectURL(blob);
 
     chrome.downloads.download({
       url,
-      filename: file.webkitRelativePath + ".gz",
-      saveAs: false
+      filename: "compressed_folder.tar.gz",
+      saveAs: true
     });
 
-    progressBar.value = i + 1;
+    status.textContent = `✅ Done! ${files.length} files archived.`;
+  } catch (err) {
+    status.textContent = `❌ Compression failed: ${err.message}`;
+    console.error(err);
   }
-
-  status.textContent = `✅ Done! Compressed ${files.length} file(s).`;
 });
