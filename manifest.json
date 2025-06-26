@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "GZIP Folder Compressor",
+  "name": "GZIP Folder Compression",
   "version": "1.0",
-  "description": "Select a folder and gzip each file with .gz output",
+  "description": "Select a folder and compress it as a single .tar.gz archive",
   "permissions": ["downloads"],
   "action": {
     "default_popup": "popup.html"
